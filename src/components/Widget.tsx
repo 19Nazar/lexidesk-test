@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { WidgetConfig, WidgetState, ChatMode } from "../types";
 import { useConversation } from "../hooks/useConversation";
 import { useElevenLabs } from "../hooks/useElevenLabs";
@@ -86,13 +86,14 @@ export const Widget: React.FC<WidgetProps> = ({ config }) => {
         setWidgetState("opening");
         setTimeout(() => setWidgetState("open"), 10);
         await startConversation();
+        console.log("openWidget", chatMode);
         await connect(chatMode);
     }, [chatMode, connect, startConversation, addMessage]);
 
     const closeWidget = useCallback(async () => {
         setWidgetState("closing");
         await disconnect();
-        await endConversation();
+        // await endConversation();
         setTimeout(() => setWidgetState("closed"), 250);
     }, [disconnect, endConversation]);
 
@@ -105,6 +106,7 @@ export const Widget: React.FC<WidgetProps> = ({ config }) => {
             await disconnect();
 
             setChatMode(mode);
+            console.log("switchMode", widgetState);
 
             if (widgetState === "open") {
                 await connect(mode);
