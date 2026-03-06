@@ -93,7 +93,6 @@ export const Widget: React.FC<WidgetProps> = ({ config }) => {
     const closeWidget = useCallback(async () => {
         setWidgetState("closing");
         await disconnect();
-        // await endConversation();
         setTimeout(() => setWidgetState("closed"), 250);
     }, [disconnect, endConversation]);
 

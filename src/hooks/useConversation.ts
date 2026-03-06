@@ -43,7 +43,6 @@ export function useConversation({ userId }: UseConversationOptions) {
                 }
             }
 
-            // Persist to backend
             if (conversationId) {
                 setMessages((current) => {
                     const apiMessages: ChatMessage[] = current
