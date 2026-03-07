@@ -1,51 +1,49 @@
 import { createRoot } from "react-dom/client";
 import { Widget } from "./components/Widget";
 import { WidgetConfig } from "./types";
-
-function injectStyles() {
-    if (document.getElementById("ai-voice-widget-styles")) return;
-    const style = document.createElement("style");
-    style.id = "ai-voice-widget-styles";
-    document.head.appendChild(style);
-}
-
-function createWidgetRoot() {
-    let root = document.getElementById("ai-voice-widget-root");
-    if (!root) {
-        root = document.createElement("div");
-        root.id = "ai-voice-widget-root";
-        document.body.appendChild(root);
-    }
-    return root;
-}
+import widgetStyles from "./index.css?inline"; // ← импорт CSS как строка
 
 export function initWidget(config: WidgetConfig) {
-    injectStyles();
-    const container = createWidgetRoot();
-    const reactRoot = createRoot(container);
-    reactRoot.render(<Widget config={config} />);
+    let host = document.getElementById("ai-voice-widget-host");
+    if (!host) {
+        host = document.createElement("div");
+        host.id = "ai-voice-widget-host";
+
+        host.style.cssText = "position:fixed;bottom:0;right:0;z-index:999999;";
+        document.body.appendChild(host);
+    }
+
+    const shadow = host.attachShadow({ mode: "open" });
+
+    const style = document.createElement("style");
+    style.textContent = widgetStyles;
+    shadow.appendChild(style);
+
+    const container = document.createElement("div");
+    shadow.appendChild(container);
+
+    createRoot(container).render(<Widget config={config} />);
 }
 
-// Auto-init from data attributes
+// Auto-init
 function autoInit() {
-    const script = document.currentScript as HTMLScriptElement | null;
+    const script =
+        (document.currentScript as HTMLScriptElement | null) ??
+        (document.querySelector(
+            "script[data-user-id]",
+        ) as HTMLScriptElement | null);
+
     if (!script) return;
 
     const userId = script.getAttribute("data-user-id");
-    const apiUrl = script.getAttribute("data-api-url");
-    const primaryColor = script.getAttribute("data-primary-color");
-    const buttonText = script.getAttribute("data-button-text");
-    const agentName = script.getAttribute("data-agent-name");
+    if (!userId) return;
 
-    if (userId) {
-        initWidget({
-            userId,
-            apiUrl: apiUrl ?? undefined,
-            primaryColor: primaryColor ?? undefined,
-            buttonText: buttonText ?? undefined,
-            agentName: agentName ?? undefined,
-        });
-    }
+    initWidget({
+        userId,
+        apiUrl: script.getAttribute("data-api-url") ?? undefined,
+        agentName: script.getAttribute("data-agent-name") ?? undefined,
+        buttonText: script.getAttribute("data-button-text") ?? undefined,
+    });
 }
 
 if (document.readyState === "loading") {
@@ -54,11 +52,9 @@ if (document.readyState === "loading") {
     autoInit();
 }
 
-// Expose globally for manual init
 declare global {
     interface Window {
-        AIVoiceWidget: { init: typeof initWidget };
+        LexideskTest: { init: typeof initWidget };
     }
 }
-
-window.AIVoiceWidget = { init: initWidget };
+window.LexideskTest = { init: initWidget };

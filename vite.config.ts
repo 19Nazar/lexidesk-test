@@ -4,12 +4,10 @@ import { resolve } from "path";
 
 export default defineConfig(({ command }) => ({
     plugins: [react()],
-
     define: {
         "process.env.NODE_ENV": JSON.stringify("production"),
         "process.env": "{}",
     },
-    // В dev-режиме build.lib не нужен — работает обычный dev server с index.html
     ...(command === "build" && {
         build: {
             lib: {

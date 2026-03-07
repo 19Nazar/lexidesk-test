@@ -4,7 +4,6 @@ import { Widget } from "./components/Widget";
 import { PromptEditor } from "./components/PromptEditor";
 import "./index.css";
 
-// Inject styles
 const style = document.createElement("style");
 document.head.appendChild(style);
 
@@ -21,7 +20,6 @@ if (mode === "editor") {
         </React.StrictMode>,
     );
 } else {
-    // Demo page
     root.render(
         <React.StrictMode>
             <div

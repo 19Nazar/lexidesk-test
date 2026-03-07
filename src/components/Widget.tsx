@@ -146,10 +146,20 @@ export const Widget: React.FC<WidgetProps> = ({ config }) => {
                     onClick={openWidget}
                     title={buttonText}
                     aria-label={buttonText}
-                    className="relative w-16 h-16 rounded-full flex items-center justify-center bg-gradient-to-br from-accent to-accent2 shadow-[0_8px_32px_rgba(108,99,255,0.5)] hover:scale-[1.08] hover:shadow-[0_12px_40px_rgba(108,99,255,0.65)] transition-all ease-in-out duration-200"
+                    style={{
+                        background: "linear-gradient(135deg, #6c63ff, #ff6584)",
+                        boxShadow: "0 8px 32px rgba(108,99,255,0.5)",
+                    }}
+                    className="relative w-16 h-16 rounded-full flex items-center justify-center hover:scale-[1.08] transition-all ease-in-out duration-200"
                 >
-                    <span className="absolute inset-[-6px] rounded-full border-2 border-accent opacity-40 animate-pulse-ring pointer-events-none" />
-                    <span className="absolute inset-[-12px] rounded-full border-2 border-accent opacity-20 animate-pulse-ring-2 pointer-events-none" />
+                    <span
+                        style={{ borderColor: "#6c63ff" }}
+                        className="absolute inset-[-6px] rounded-full border-2 opacity-40 animate-pulse-ring pointer-events-none"
+                    />
+                    <span
+                        style={{ borderColor: "#6c63ff" }}
+                        className="absolute inset-[-12px] rounded-full border-2 opacity-20 animate-pulse-ring-2 pointer-events-none"
+                    />
                     <MicIcon />
                 </button>
             </div>
@@ -157,10 +167,10 @@ export const Widget: React.FC<WidgetProps> = ({ config }) => {
     }
 
     return (
-        <div className="fixed bottom-6 right-6 z-[999999] flex flex-col items-end gap-3">
+        <div className="fixed bottom-6 right-1 sm:right-6 z-[999999] flex flex-col items-end gap-3">
             <div
                 className={`
-                    w-[380px] h-[580px] sm:w-[calc(100vw-32px)] sm:h-[70vh] md:w-[380px] md:h-[580px]
+                    min-w-[310px] h-[580px] w-[calc(100vw-32px)] sm:h-[70vh] md:w-[380px] md:h-[580px]
                     bg-base rounded-[20px] flex flex-col overflow-hidden
                     border border-[rgba(108,99,255,0.2)]
                     shadow-[0_32px_80px_rgba(0,0,0,0.6),0_0_0_1px_rgba(108,99,255,0.15)]
@@ -176,7 +186,7 @@ export const Widget: React.FC<WidgetProps> = ({ config }) => {
                         {config.agentAvatar ?? "🤖"}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <div className="font-syne font-bold text-[15px] text-[#e8e8f0] leading-tight">
+                        <div className="font-syne font-bold text-[clamp(12px,calc(12px+3*(100vw-320px)/960),15px)] text-[#e8e8f0] leading-tight">
                             {agentName}
                         </div>
                         <div className="flex items-center gap-1 text-xs font-medium text-accent mt-0.5">
